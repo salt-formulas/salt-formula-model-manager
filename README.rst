@@ -7,6 +7,8 @@ Model-manager is a service for manipulating the metadata models of the
 SaltStack/reclass based deployments. It covers model management at various
 stages of deployment life-cycles.
 
+.. image:: doc/source/_static/img/stargate.png
+
 
 Sample metadata
 ===============
