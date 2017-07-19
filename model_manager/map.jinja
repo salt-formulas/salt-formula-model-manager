@@ -6,10 +6,14 @@ Debian:
   user: model_manager
   source:
     engine: git
-    address: git@github.com:salt-formulas/django-model-manager.git
+    address: https://github.com/salt-formulas/django-model-manager.git
     revision: master
   pkgs:
   - python-virtualenv
+  - python-dev
+  - build-essential
+  - libssl-dev
+  - libffi-dev
   dir:
     base: /srv/model-manager
     log: /var/log/model-manager
@@ -32,3 +36,4 @@ Debian:
 {%- endload %}
 
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('model_manager:server')) %}
+

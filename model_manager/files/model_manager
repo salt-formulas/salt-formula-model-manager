@@ -6,7 +6,7 @@ DJANGODIR=/srv/model-manager
 USER=model_manager
 GROUP=model_manager
 NUM_WORKERS={{ server.get('workers', 3) }}
-DJANGO_SETTINGS_MODULE="local.settings"
+DJANGO_SETTINGS_MODULE="model_manager.settings.base"
 DJANGO_WSGI_MODULE=wsgi
 
 # Activate the virtual environment
@@ -22,6 +22,6 @@ exec /srv/model-manager/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
   --workers $NUM_WORKERS \
   --user=$USER --group=$GROUP \
   --log-level=debug \
-  --log-file=/var/log/model_manager/gunicorn.log \
+  --log-file=/var/log/model-manager/gunicorn.log \
   --bind={{ server.bind.address }}:{{ server.bind.port }} \
   --timeout=600
