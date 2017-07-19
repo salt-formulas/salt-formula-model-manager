@@ -1,0 +1,5 @@
+salt-formula-model_manager (2017.6) trusty; urgency=medium
+
+  * Initial release
+
+ -- Ales Komarek akomarek@mirantis.com  Wed, 19 Jul 2017 12:50:40 BST

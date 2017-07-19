@@ -1,0 +1,15 @@
+Source: salt-formula-model_manager
+Maintainer: Ales Komarek akomarek@mirantis.com
+Section: admin
+Priority: optional
+Build-Depends: debhelper (>= 9), salt-master, python, python-yaml
+Standards-Version: 3.9.6
+Homepage: https://github.com/salt-formulas/salt-formula-model-manager
+Vcs-Browser: https://github.com/salt-formulas/salt-formula-model_manager
+Vcs-Git: https://github.com/salt-formulas/salt-formula-model_manager.git
+
+Package: salt-formula-model_manager
+Architecture: all
+Depends: ${misc:Depends}, salt-master, reclass
+Description: model_manager salt formula
+ Install and configure model_manager system.
