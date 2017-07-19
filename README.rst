@@ -21,7 +21,7 @@ Use cases for the model-manager service are:
 Sample metadata
 ===============
 
-model-manager service with keystone authentication
+model-manager service with Keystone authentication
 
 .. code-block:: yaml
 
@@ -34,9 +34,8 @@ model-manager service with keystone authentication
           revision: master
         identity:
           engine: keystone
-          address: git@repo.com:repo.git
-          revision: master
-
+          host: keystone.endpoint.com
+          api_version: 3
 
 model-manager service with model generator and Jenkins integration
 
