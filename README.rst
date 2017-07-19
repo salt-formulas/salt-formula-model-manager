@@ -8,7 +8,7 @@ SaltStack/reclass based deployments. It covers model management at various
 stages of deployment life-cycles.
 
 .. image:: doc/source/_static/img/stargate.png
-   :scale: 50%
+   :width: 60%
    :align: center
 
 Use cases for the model-manager service are:
