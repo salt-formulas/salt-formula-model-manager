@@ -8,7 +8,7 @@ Type=simple
 User=model_manager
 Group=model_manager
 WorkingDirectory={{ server.dir.base }}
-ExecStart={{ server.dir.base }}/bin/model-manager
+ExecStart={{ server.dir.base }}/bin/model_manager
 RestartSec=5
 Restart=on-failure
 

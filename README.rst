@@ -28,13 +28,15 @@ model-manager service with Keystone authentication
     model_manager:
       server:
         enabled: true
+        secret_key: supersecretkey
         source:
           engine: git
-          address: git@github.com:salt-formulas/django-model-manager.git
+          address: https://github.com/salt-formulas/django-model-manager.git
           revision: master
         identity:
           engine: keystone
           host: keystone.endpoint.com
+          protocol: https
           api_version: 3
 
 model-manager service with model generator and Jenkins integration
@@ -56,10 +58,10 @@ model-manager service with model generator and Jenkins integration
           port: 8080
           user: model-manager
           password: password
-        model_template:
-          engine: git
-          address: git@repo.com:repo.git
-          revision: master
+          model_template:
+            remote: http
+            url: https://git.my-gitlab.io/group/project/raw/master/context.yaml
+            job: generator-job
 
 model-manager service with Salt master integration
 
@@ -73,7 +75,7 @@ model-manager service with Salt master integration
         - _5010_resource_management_panel_group
         - _5020_delivery_resource_topology_panel
         - _5030_delivery_salt_control_panel
-        orchestration:
+        delivery:
           engine: salt
           protocol: http
           host: 127.0.0.1
