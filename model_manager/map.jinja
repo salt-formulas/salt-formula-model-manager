@@ -1,10 +1,33 @@
+{%- set source_engine = salt['pillar.get']('model_manager:server:source:engine') %}
 
 {%- load_yaml as base_defaults %}
-
+{%- if source_engine == 'git' %}
+Debian:
+  user: model_manager
+  source:
+    engine: git
+    address: git@github.com:salt-formulas/django-model-manager.git
+    revision: master
+  pkgs:
+  - python-virtualenv
+  dir:
+    base: /srv/model-manager
+    log: /var/log/model-manager
+  bind:
+    address: 0.0.0.0
+  identity:
+    engine: noop
+  integration:
+    engine: noop
+  orchestration:
+    engine: noop
+{%- else %}
 Debian:
   pkgs:
-  - model_manager
-
+  - horizon-model-manager
+  dir:
+    base: /usr/lib/horizon-model-manager
+{%- endif %}
 {%- endload %}
 
 {%- set server = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('model_manager:server')) %}

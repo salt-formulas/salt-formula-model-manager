@@ -1,0 +1,16 @@
+{%- from "model_manager/map.jinja" import server with context %}
+
+[Unit]
+Description=model-manager
+
+[Service]
+Type=simple
+User=model_manager
+Group=model_manager
+WorkingDirectory={{ server.dir.base }}
+ExecStart={{ server.dir.base }}/bin/model-manager
+RestartSec=5
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

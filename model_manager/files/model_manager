@@ -1,0 +1,27 @@
+#!/bin/bash
+{%- from "model_manager/map.jinja" import server with context %}
+
+NAME="model-manager"
+DJANGODIR=/srv/model-manager
+USER=model_manager
+GROUP=model_manager
+NUM_WORKERS={{ server.get('workers', 3) }}
+DJANGO_SETTINGS_MODULE="local.settings"
+DJANGO_WSGI_MODULE=wsgi
+
+# Activate the virtual environment
+cd $DJANGODIR
+source /srv/model-manager/bin/activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR/source:$DJANGODIR/site:$PYTHONPATH
+
+# Start your Django Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves
+exec /srv/model-manager/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --user=$USER --group=$GROUP \
+  --log-level=debug \
+  --log-file=/var/log/model_manager/gunicorn.log \
+  --bind={{ server.bind.address }}:{{ server.bind.port }} \
+  --timeout=600
