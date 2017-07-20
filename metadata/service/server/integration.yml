@@ -1,0 +1,45 @@
+applications:
+- model_manager
+classes:
+- service.model_manager.support
+parameters:
+  _param:
+    model_manager_identity_host: keystone.endpoint.com
+    model_manager_jenkins_host: 127.0.0.1
+    model_manager_jenkins_user: model-manager
+    model_manager_jenkins_password: password
+    model_manager_template_url: https://git.my-gitlab.io/group/project/raw/master/context.yaml
+    model_manager_template_job: generator-job
+  model_manager:
+    server:
+      enabled: true
+      secret_key: ${_param:model_manager_secret_key}
+      config_files:
+      - _4000_integration
+      - _4010_models_panel_group
+      - _4020_integration_overview_panel
+      - _4030_integration_modeldesigner_panel
+      bind:
+        address: 127.0.0.1
+        port: 8000
+      source:
+        engine: git
+        address: https://github.com/salt-formulas/django-model-manager.git
+        revision: master
+      identity:
+        engine: keystone
+        host: ${_param:model_manager_identity_host}
+        protocol: https
+        api_version: 3
+      integration:
+        engine: jenkins
+        protocol: https
+        host: ${_param:model_manager_jenkins_host}
+        port: 443
+        user: ${_param:model_manager_jenkins_user}
+        password: ${_param:model_manager_jenkins_password}
+        model_template:
+          remote: http
+          url: ${_param:model_manager_template_url}
+          job: ${_param:model_manager_template_job}
+

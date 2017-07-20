@@ -1,22 +1,4 @@
-applications:
-- model_manager
 classes:
-- service.model_manager.support
-parameters:
-  model_manager:
-    server:
-      enabled: true
-      secret_key: ${_param:model_manager_secret_key}
-      bind:
-        address: 0.0.0.0
-        port: 8000
-      source:
-        engine: git
-        address: https://github.com/salt-formulas/django-model-manager.git
-        revision: master
-      identity:
-        engine: keystone
-        host: keystone.endpoint.com
-        protocol: https
-        api_version: 3
+- service.model_manager.integration
+- service.model_manager.delivery
 
