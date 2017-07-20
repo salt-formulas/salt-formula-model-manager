@@ -1,4 +1,4 @@
-{%- from "model_manager/map.jinja" import server with context %}
+{%- from "model_manager/map.jinja" import server with context -%}
 
 SECRET_KEY = '{{ server.secret_key }}'
 DEBUG = True
@@ -20,17 +20,17 @@ TEMPLATE_LOADERS = (
 
 {%- if server.integration.engine == 'jenkins' %}
 
-JENKINS_API_URL = "{{ server.integration.protocol }}://{{ server.integration.host }}:{{ server.integration.port }}"
-JENKINS_API_USERNAME = "{{ server.integration.user }}"
-JENKINS_API_PASSWORD = "{{ server.integration.password }}"
+JENKINS_API_URL = '{{ server.integration.protocol }}://{{ server.integration.host }}:{{ server.integration.port }}'
+JENKINS_API_USERNAME = '{{ server.integration.user }}'
+JENKINS_API_PASSWORD = '{{ server.integration.password }}'
 
 {%- endif %}
 
 {%- if server.integration.model_template is defined %}
 
-COOKIECUTTER_JENKINS_JOB = "{{ server.integration.model_template.job }}"
-COOKIECUTTER_CONTEXT_REMOTE = "{{ server.integration.model_template.remote }}"
-COOKIECUTTER_CONTEXT_URL = "{{ server.integration.model_template.url }}"
+COOKIECUTTER_JENKINS_JOB = '{{ server.integration.model_template.job }}'
+COOKIECUTTER_CONTEXT_REMOTE = '{{ server.integration.model_template.remote }}'
+COOKIECUTTER_CONTEXT_URL = '{{ server.integration.model_template.url }}'
 
 {%- endif %}
 
@@ -40,11 +40,11 @@ COOKIECUTTER_CONTEXT_URL = "{{ server.integration.model_template.url }}"
 
 {%- if server.delivery.engine == 'salt' %}
 
-SALT_API_URL="{{ server.delivery.protocol }}://{{ server.delivery.host }}:{{ server.delivery.port }}"
-SALT_API_USER="{{ server.delivery.user }}"
-SALT_API_PASSWORD="{{ server.delivery.password }}"
-SALT_API_EAUTH="pam"
-SALT_API_POLLING_INTERVAL=5
+SALT_API_URL = '{{ server.delivery.protocol }}://{{ server.delivery.host }}:{{ server.delivery.port }}'
+SALT_API_USER = '{{ server.delivery.user }}'
+SALT_API_PASSWORD = '{{ server.delivery.password }}'
+SALT_API_EAUTH = 'pam'
+SALT_API_POLLING_INTERVAL = 5
 
 {%- endif %}
 
@@ -56,7 +56,7 @@ OPENSTACK_API_VERSIONS = {
     'identity': {{ server.identity.get('api_version') }},
 }
 
-OPENSTACK_HOST = {{ server.identity.host }}
+OPENSTACK_HOST = "{{ server.identity.host }}"
 {%- if server.identity.get('api_version') == 3 %}
 OPENSTACK_KEYSTONE_URL = '{{ server.identity.protocol }}://%s:5000/v3' % OPENSTACK_HOST
 {%- else %}

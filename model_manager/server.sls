@@ -12,26 +12,40 @@ model_manager_packages:
   - require:
     - pkg: model_manager_packages
 
+{%- if server.source.commit_id is defined %}
+
+model_manager_source:
+  git.detached:
+  - name: {{ server.source.address }}
+  - target: {{ server.dir.base }}/source
+  {%- if grains.saltversioninfo.0 > 2016 %}
+  - rev: {{ server.source.commit_id }}
+  {%- else %}
+  - ref: {{ server.source.commit_id }}
+  {%- endif %}
+  - require:
+    - virtualenv: {{ server.dir.base }}
+
+{%- else %}
+
 model_manager_source:
   git.latest:
   - name: {{ server.source.address }}
   - target: {{ server.dir.base }}/source
-  {%- if grains.saltversioninfo.0 > 2015 %}
   - rev: HEAD
   - branch: {{ server.source.revision }}
-  {%- else %}
-  - rev: {{ server.source.revision }}
-  {%- endif %}
-  - submodules: True
   - require:
     - virtualenv: {{ server.dir.base }}
 
+{%- endif %}
+
 model_manager_requirements:
   pip.installed:
-    - requirements: {{ server.dir.base }}/source/requirements.txt
-    - bin_env: {{ server.dir.base }}/bin/pip
-    - require:
-      - git: model_manager_source
+  - name: gunicorn
+  - requirements: {{ server.dir.base }}/source/requirements.txt
+  - bin_env: {{ server.dir.base }}/bin/pip
+  - require:
+    - git: model_manager_source
 
 model_manager_user:
   user.present:
@@ -72,6 +86,8 @@ model_manager_enabled_init:
   - name: {{ server.dir.base }}/source/model_manager/settings/enabled/__init__.py
   - contents: ""
   - user: model_manager
+  - require:
+    - git: model_manager_source
   - require_in:
     - file: model_manager_config_dir
 
@@ -82,6 +98,8 @@ model_manager_enabled_{{ config_file }}:
   - name: {{ server.dir.base }}/source/model_manager/settings/enabled/{{ config_file }}.py
   - source: salt://model_manager/files/config_files/{{ config_file }}.py
   - user: model_manager
+  - require:
+    - git: model_manager_source
   - require_in:
     - file: model_manager_config_dir
 
@@ -93,6 +111,8 @@ model_manager_config_dir:
     - {{ server.dir.base }}/source/model_manager/settings/enabled
   - user: model_manager
   - clean: true
+  - require:
+    - git: model_manager_source
 
 {%- endif %}
 
@@ -138,6 +158,9 @@ model_manager_service:
   - name: model-manager
   - enable: true
   - require:
+    - git: model_manager_source
+  - watch:
+    - file: model_manager_config
     - file: model_manager_service_script
 
 {%- endif %}
