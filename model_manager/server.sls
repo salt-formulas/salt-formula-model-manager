@@ -5,8 +5,9 @@ model_manager_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
 
-{{ server.dir.base }}:
+model_manager_virtualenv:
   virtualenv.manage:
+  - name: {{ server.dir.base }}
   - system_site_packages: True
   - python: /usr/bin/python
   - require:
@@ -24,7 +25,7 @@ model_manager_source:
   - ref: {{ server.source.commit_id }}
   {%- endif %}
   - require:
-    - virtualenv: {{ server.dir.base }}
+    - virtualenv: model_manager_virtualenv
 
 {%- else %}
 
@@ -35,17 +36,23 @@ model_manager_source:
   - rev: HEAD
   - branch: {{ server.source.revision }}
   - require:
-    - virtualenv: {{ server.dir.base }}
+    - virtualenv: model_manager_virtualenv
 
 {%- endif %}
 
 model_manager_requirements:
   pip.installed:
-  - name: gunicorn
   - requirements: {{ server.dir.base }}/source/requirements.txt
-  - bin_env: {{ server.dir.base }}/bin/pip
+  - bin_env: {{ server.dir.base }}
   - require:
     - git: model_manager_source
+
+model_manager_gunicorn:
+  pip.installed:
+  - name: gunicorn
+  - bin_env: {{ server.dir.base }}
+  - require:
+    - virtualenv: model_manager_virtualenv
 
 model_manager_user:
   user.present:
@@ -113,8 +120,18 @@ model_manager_config_dir:
   - clean: true
   - require:
     - git: model_manager_source
+  - require_in:
+    - cmd: model_manager_setup
 
 {%- endif %}
+
+model_manager_setup:
+  cmd.run:
+  - names:
+    - source {{ server.dir.base }}/bin/activate; python manage.py collectstatic --noinput; python manage.py compress --force
+  - cwd: {{ server.dir.base }}/source
+  - require:
+    - git: model_manager_source
 
 model_manager_wsgi:
   file.managed:
@@ -160,7 +177,7 @@ model_manager_service:
   - require:
     - git: model_manager_source
   - watch:
-    - file: model_manager_config
+    - cmd: model_manager_setup
     - file: model_manager_service_script
 
 {%- endif %}

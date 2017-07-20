@@ -1,0 +1,40 @@
+applications:
+- model_manager
+classes:
+- service.model_manager.support
+parameters:
+  _param:
+    model_manager_identity_host: keystone.endpoint.com
+    model_manager_salt_protocol: https
+    model_manager_salt_host: 127.0.0.1
+    model_manager_salt_user: model-manager
+    model_manager_salt_password: password
+  model_manager:
+    server:
+      enabled: true
+      secret_key: ${_param:model_manager_secret_key}
+      config_files:
+      - _5000_delivery
+      - _5010_resource_management_panel_group
+      - _5020_delivery_resource_topology_panel
+      - _5030_delivery_salt_control_panel
+      bind:
+        address: 127.0.0.1
+        port: 8000
+      source:
+        engine: git
+        address: https://github.com/salt-formulas/django-model-manager.git
+        revision: master
+      identity:
+        engine: keystone
+        host: ${_param:model_manager_identity_host}
+        protocol: https
+        api_version: 3
+      delivery:
+        engine: salt
+        protocol: ${_param:model_manager_salt_protocol}
+        host: ${_param:model_manager_salt_host}
+        port: 6969
+        user: ${_param:model_manager_salt_user}
+        password: ${_param:model_manager_salt_password
+
