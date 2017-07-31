@@ -36,5 +36,4 @@ parameters:
         host: ${_param:model_manager_salt_host}
         port: 6969
         user: ${_param:model_manager_salt_user}
-        password: ${_param:model_manager_salt_password
-
+        password: ${_param:model_manager_salt_password}
