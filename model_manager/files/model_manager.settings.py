@@ -1,7 +1,7 @@
 {%- from "model_manager/map.jinja" import server with context -%}
 
 SECRET_KEY = '{{ server.secret_key }}'
-DEBUG = True
+DEBUG = {{ server.get("debug", False) }}
 
 AVAILABLE_THEMES = [
     ('vendor', 'Default', 'themes/vendor')
@@ -57,6 +57,7 @@ OPENSTACK_API_VERSIONS = {
 }
 
 OPENSTACK_HOST = "{{ server.identity.host }}"
+OPENSTACK_ENDPOINT_TYPE = "{{ server.identity.get('endpoint', 'publicURL') }}"
 {%- if server.identity.get('api_version') == 3 %}
 OPENSTACK_KEYSTONE_URL = '{{ server.identity.protocol }}://%s:5000/v3' % OPENSTACK_HOST
 {%- else %}
@@ -68,7 +69,7 @@ AUTHENTICATION_URLS = ['openstack_auth.urls']
 AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
 AUTH_USER_MODEL = 'openstack_auth.User'
 
-{% endif %}
+{%- endif %}
 
 INSTALLED_APPS = [
     'model_manager',
@@ -84,6 +85,30 @@ INSTALLED_APPS = [
     'horizon',
     'openstack_auth'
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '{{ server.dir.log }}/model-manager.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'model_manager': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
