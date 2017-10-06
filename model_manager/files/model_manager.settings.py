@@ -3,10 +3,11 @@
 SECRET_KEY = '{{ server.secret_key }}'
 DEBUG = {{ server.get("debug", False) }}
 
+ALLOWED_HOSTS = ['*']
+
 AVAILABLE_THEMES = [
     ('vendor', 'Default', 'themes/vendor')
 ]
-
 DEFAULT_THEME = "vendor"
 
 TEMPLATE_LOADERS = (
@@ -15,6 +16,8 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     'horizon.loaders.TemplateLoader',
 )
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 {%- if server.integration is defined %}
 

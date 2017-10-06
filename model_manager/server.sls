@@ -76,6 +76,11 @@ model_manager_dir:
   - require:
     - virtualenv: {{ server.dir.base }}
 
+model_manager_log:
+  file.managed:
+  - name: {{ server.dir.log }}/model-manager.log
+  - user: model_manager
+
 model_manager_config:
   file.managed:
   - name: /etc/model-manager/settings.py

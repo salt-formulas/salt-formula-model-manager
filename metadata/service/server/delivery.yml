@@ -7,6 +7,7 @@ parameters:
     model_manager_identity_host: keystone.endpoint.com
     model_manager_salt_protocol: https
     model_manager_salt_host: 127.0.0.1
+    model_manager_salt_port: 8000
     model_manager_salt_user: model-manager
     model_manager_salt_password: password
   model_manager:
@@ -34,6 +35,6 @@ parameters:
         engine: salt
         protocol: ${_param:model_manager_salt_protocol}
         host: ${_param:model_manager_salt_host}
-        port: 6969
+        port: ${_param:model_manager_salt_port}
         user: ${_param:model_manager_salt_user}
         password: ${_param:model_manager_salt_password}
