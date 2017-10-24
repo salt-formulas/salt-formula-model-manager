@@ -33,7 +33,11 @@ JENKINS_API_PASSWORD = '{{ server.integration.password }}'
 
 COOKIECUTTER_JENKINS_JOB = '{{ server.integration.model_template.job }}'
 COOKIECUTTER_CONTEXT_REMOTE = '{{ server.integration.model_template.remote }}'
+{% if server.integration.model_template.remote == 'http' %}
 COOKIECUTTER_CONTEXT_URL = '{{ server.integration.model_template.url }}'
+{% else %}
+COOKIECUTTER_CONTEXT_PATH = '{{ server.integration.model_template.path }}'
+{% endif %}
 
 {%- endif %}
 
