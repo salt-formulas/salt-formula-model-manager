@@ -10,6 +10,6 @@ Vcs-Git: https://github.com/salt-formulas/salt-formula-model_manager.git
 
 Package: salt-formula-model_manager
 Architecture: all
-Depends: ${misc:Depends}, salt-master, reclass
+Depends: ${misc:Depends}
 Description: model_manager salt formula
  Install and configure model_manager system.
