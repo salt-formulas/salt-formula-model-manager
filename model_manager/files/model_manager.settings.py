@@ -33,11 +33,44 @@ JENKINS_API_PASSWORD = '{{ server.integration.password }}'
 
 COOKIECUTTER_JENKINS_JOB = '{{ server.integration.model_template.job }}'
 COOKIECUTTER_CONTEXT_REMOTE = '{{ server.integration.model_template.remote }}'
-{% if server.integration.model_template.remote == 'http' %}
+
+{# HTTP remote options #}
+{%- if server.integration.model_template.remote == 'http' %}
+
 COOKIECUTTER_CONTEXT_URL = '{{ server.integration.model_template.url }}'
-{% else %}
+
+{%- endif %}
+
+{# Local filesystem remote options #}
+{%- if server.integration.model_template.remote == 'localfs' %}
+
 COOKIECUTTER_CONTEXT_PATH = '{{ server.integration.model_template.path }}'
-{% endif %}
+
+{%- endif %}
+
+{# Gerrit remote options #}
+{%- if server.integration.model_template.remote == 'gerrit' %}
+
+COOKIECUTTER_CONTEXT_URL = '{{ server.integration.model_template.url }}'
+COOKIECUTTER_CONTEXT_PROJECT_NAME = '{{ server.integration.model_template.project_name }}'
+COOKIECUTTER_CONTEXT_FILE_NAME = '{{ server.integration.model_template.file_name }}'
+{%- if server.integration.model_template.username is defined and server.integration.model_template.username %}
+COOKIECUTTER_CONTEXT_USERNAME = '{{ server.integration.model_template.username }}'
+{%- endif %}
+{%- if server.integration.model_template.password is defined and server.integration.model_template.password %}
+COOKIECUTTER_CONTEXT_PASSWORD = '{{ server.integration.model_template.password }}'
+{%- endif %}
+
+{%- endif %}
+
+{# Versioning - only supported with Gerrit remote #}
+{%- if server.integration.model_template.get('versioning', {}).get('enabled', False) %}
+
+COOKIECUTTER_CONTEXT_VERSIONING_ENABLED = True
+COOKIECUTTER_CONTEXT_VERSION_FILTER = '{{ server.integration.model_template.versioning.get("filter", "") }}'
+COOKIECUTTER_CONTEXT_VERSION_MAP = {{ server.integration.model_template.versioning.get('map', {}) }}
+
+{%- endif %}
 
 {%- endif %}
 

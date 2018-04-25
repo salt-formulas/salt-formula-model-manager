@@ -39,7 +39,7 @@ model-manager service with Keystone authentication
           protocol: https
           api_version: 3
 
-model-manager service with model generator and Jenkins integration
+model-manager service with model generator and Jenkins integration and HTTP remote
 
 .. code-block:: yaml
 
@@ -59,9 +59,66 @@ model-manager service with model generator and Jenkins integration
           user: model-manager
           password: password
           model_template:
+            job: generator-job
             remote: http
             url: https://git.my-gitlab.io/group/project/raw/master/context.yaml
+
+model-manager service with model generator and Jenkins integration and localfs remote
+
+.. code-block:: yaml
+
+    model_manager:
+      server:
+        enabled: true
+        config_files:
+        - _4000_integration
+        - _4010_models_panel_group
+        - _4020_integration_overview_panel
+        - _4030_integration_modeldesigner_panel
+        integration:
+          engine: jenkins
+          protocol: http
+          host: 127.0.0.1
+          port: 8080
+          user: model-manager
+          password: password
+          model_template:
             job: generator-job
+            remote: localfs
+            path: /etc/model-manager/cookiecutter-context.yaml
+
+model-manager service with Gerrit remote and dynamic versioning enabled
+
+.. code-block:: yaml
+
+    model_manager:
+      server:
+        enabled: true
+        config_files:
+        - _4000_integration
+        - _4010_models_panel_group
+        - _4020_integration_overview_panel
+        - _4030_integration_modeldesigner_panel
+        integration:
+          engine: jenkins
+          protocol: http
+          host: 127.0.0.1
+          port: 8080
+          user: model-manager
+          password: password
+          model_template:
+            job: generator-job
+            remote: gerrit
+            url: https://my-gerrit.com
+            project_name: full%2Fproject-name
+            file_name: cookiecutter_context.yaml
+            username: foo
+            password: bar
+            versioning:
+              enabled: true
+              filter: <regex>
+              map:
+                foo: bar
 
 model-manager service with Salt master integration
 

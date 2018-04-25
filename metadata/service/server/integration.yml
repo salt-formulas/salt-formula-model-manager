@@ -8,8 +8,17 @@ parameters:
     model_manager_jenkins_host: 127.0.0.1
     model_manager_jenkins_user: model-manager
     model_manager_jenkins_password: password
+    model_manager_template_remote: http
     model_manager_template_url: https://git.my-gitlab.io/group/project/raw/master/context.yaml
+    model_manager_template_path: /etc/model-manager/cookiecutter_context.yaml
     model_manager_template_job: generator-job
+    model_manager_template_project_name: null
+    model_manager_template_file_name: null
+    model_manager_template_username: null
+    model_manager_template_password: null
+    model_manager_template_versioning_enabled: false
+    model_manager_template_version_filter: ''
+    model_manager_template_version_map: {}
   model_manager:
     server:
       enabled: true
@@ -39,7 +48,15 @@ parameters:
         user: ${_param:model_manager_jenkins_user}
         password: ${_param:model_manager_jenkins_password}
         model_template:
-          remote: http
+          remote: ${_param:model_manager_template_remote}
+          path: ${_param:model_manager_template_path}
           url: ${_param:model_manager_template_url}
           job: ${_param:model_manager_template_job}
-
+          project_name: ${_param:model_manager_template_project_name}
+          file_name: ${_param:model_manager_template_file_name}
+          username: ${_param:model_manager_template_username}
+          password: ${_param:model_manager_template_password}
+          versioning:
+            enabled: ${_param:model_manager_template_versioning_enabled}
+            filter: ${_param:model_manager_template_version_filter}
+            map: ${_param:model_manager_template_version_map}
